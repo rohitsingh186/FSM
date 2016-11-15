@@ -1,11 +1,10 @@
-package fsm.dao;
-
-import java.util.HashMap;
-import java.util.List;
+package fsm.service;
 
 import fsm.domain.Country;
 
-public interface CountryDao {
+import java.util.List;
+
+public interface CountryService {
 
 	public Integer addCountry(Country country);
 
@@ -15,7 +14,8 @@ public interface CountryDao {
 
 	public Country getCountryById(int countryId);
 
+	public Country getCountryByName(String countryName);
+
 	public List<Country> getAllCountries();
 
-	Country getCountryByName(String countryName);
 }

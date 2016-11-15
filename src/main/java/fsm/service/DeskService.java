@@ -1,12 +1,14 @@
-package fsm.dao;
-
-import java.util.List;
+package fsm.service;
 
 import fsm.domain.Desk;
 
-public interface DeskDao {
+import java.util.List;
+
+public interface DeskService {
 
 	public Integer addDesk(Desk desk);
+
+	public Integer addAllDesk(List<Desk> desk);
 
 	public void removeDesk(int deskId);
 
@@ -16,5 +18,4 @@ public interface DeskDao {
 
 	public List<Desk> getAllDesks();
 
-    Integer addAllDesk(List<Desk> desk);
 }

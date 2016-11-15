@@ -1,12 +1,14 @@
-package fsm.dao;
-
-import java.util.List;
+package fsm.service;
 
 import fsm.domain.Table;
 
-public interface TableDao {
+import java.util.List;
+
+public interface TableService {
 
 	public Integer addTable(Table table);
+
+	public Integer addAllTables(List<Table> table);
 
 	public void removeTable(int tableId);
 
@@ -16,5 +18,4 @@ public interface TableDao {
 
 	public List<Table> getAllTables();
 
-    Integer addAllTables(List<Table> table);
 }

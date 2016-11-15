@@ -1,10 +1,10 @@
-package fsm.dao;
-
-import java.util.List;
+package fsm.service;
 
 import fsm.domain.Location;
 
-public interface LocationDao {
+import java.util.List;
+
+public interface LocationService {
 
 	public Integer addLocation(Location location);
 

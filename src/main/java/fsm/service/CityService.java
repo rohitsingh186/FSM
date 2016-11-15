@@ -1,10 +1,10 @@
-package fsm.dao;
-
-import java.util.List;
+package fsm.service;
 
 import fsm.domain.City;
 
-public interface CityDao {
+import java.util.List;
+
+public interface CityService {
 
 	public Integer addCity(City city);
 
@@ -15,6 +15,7 @@ public interface CityDao {
 	public City getCityById(int cityId);
 
 	public City getCityByName(String cityName);
+
 
 	public List<City> getAllCities();
 
