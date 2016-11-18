@@ -1,6 +1,7 @@
 package fsm.service;
 
 import fsm.domain.Employee;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

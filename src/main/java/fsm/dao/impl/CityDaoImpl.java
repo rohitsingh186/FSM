@@ -5,11 +5,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fsm.dao.CityDao;
 import fsm.domain.City;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class CityDaoImpl implements CityDao {
 
 	@Autowired
@@ -51,7 +54,9 @@ public class CityDaoImpl implements CityDao {
 	public City getCityByName(String cityName)
 	{
 		Session session = sessionFactory.getCurrentSession();
-		City city = (City) session.get(City.class, cityName);
+		Criteria criteria=session.createCriteria(City.class);
+		criteria.add(Restrictions.eq("name", cityName));
+		City city=(City)criteria.uniqueResult();
 		return city;
 	}
 	public List<City> getAllCities() {

@@ -5,22 +5,24 @@ import java.util.*;
 import fsm.domain.Desk;
 import fsm.domain.Floor;
 import fsm.domain.Table;
-
+import fsm.domain.UI.FloorObjects;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
 
 /**
  * Created by Sarthak on 10-09-2016.
  */
+@Service
+@RequestScope
 public class TableGenerator {
 	private int maxX, maxY;
 	boolean visited[][];
-	HashSet<Desk> deskSet;
 	public String tableIds[][];
 
-	private Table generateTable(Desk desk) {
+	private Table generateTable(List<Desk> deskSet,Desk desk) {
 		Table generatedTable=new Table();
-
-        desk = getDesk(desk);
+        desk = getDesk(deskSet,desk);
 		int topLeftX = desk.getX(), topLeftY = desk.getY();
 		int maxPushPointX = 0, maxPushPointY = 0;
 		List<Desk> desksForCurrentTable = new ArrayList<Desk>();
@@ -39,22 +41,34 @@ public class TableGenerator {
 			visited[current.getX()][current.getY()] = true;
 			Desk rightDesk = new Desk(current.getX() + current.getWidth(), current.getY());
 			Desk downDesk = new Desk(current.getX(), current.getY() + current.getHeight());
-			if (deskSet.contains(rightDesk)) {
-				rightDesk = getDesk(rightDesk);
+            /*Desk diagonalDownDesk = new Desk(current.getX()+current.getWidth(), current.getY() + current.getHeight());
+*/
+
+            if (containsDesk(deskSet,rightDesk)) {
+				rightDesk = getDesk(deskSet,rightDesk);
 				queue.add(rightDesk);
 				pointQueue.add(new Point(currentPoint.x + 1, currentPoint.y));
 				maxPushPointX = Math.max(currentPoint.x + 1, maxPushPointX);
 				maxPushPointY = Math.max(currentPoint.y, maxPushPointY);
 			}
 
-			if (deskSet.contains(downDesk)) {
-				downDesk = getDesk(downDesk);
+			if (containsDesk(deskSet,downDesk)) {
+				downDesk = getDesk(deskSet,downDesk);
 				queue.add(downDesk);
 				pointQueue.add(new Point(currentPoint.x, currentPoint.y + 1));
 				maxPushPointX = Math.max(currentPoint.x, maxPushPointX);
 				maxPushPointY = Math.max(currentPoint.y + 1, maxPushPointY);
 			}
-		}
+           /* if (containsDesk(deskSet,diagonalDownDesk)) {
+                diagonalDownDesk = getDesk(deskSet,diagonalDownDesk);
+                queue.add(diagonalDownDesk);
+                pointQueue.add(new Point(currentPoint.x+1, currentPoint.y + 1));
+                maxPushPointX = Math.max(currentPoint.x+1, maxPushPointX);
+                maxPushPointY = Math.max(currentPoint.y + 1, maxPushPointY);
+            }*/
+
+
+        }
 		//String deskIds[] = new String[desksForCurrentTable.size()];
 		//int index = 0;
 
@@ -66,11 +80,24 @@ public class TableGenerator {
 		//String finalTable[][] = new String[maxPushPointY + 1][maxPushPointX + 1];
 
 
+
+        System.out.println("table Id");
+        for(int i=0;i<=maxPushPointX;i++) {
+            for (int j = 0; j <= maxPushPointY; j++)
+                System.out.print(tableIds[i][j] + " ");
+        System.out.println();
+        }
         for (int i = 0; i <= maxPushPointY; i++)
             for (int j = 0; j <= maxPushPointX; j++) {
-                getDeskFromCode(desksForCurrentTable,tableIds[j][i]).setTableRow(i);
-                getDeskFromCode(desksForCurrentTable,tableIds[j][i]).setTableCol(j);
+				Desk deskTemp=getDeskFromCode(desksForCurrentTable,tableIds[j][i]);
+				if(deskTemp==null)
+					continue;
+				deskTemp.setTableRow(i);
+                deskTemp.setTableCol(j);
+	            System.out.print(tableIds[j][i]+" ");
             }
+        System.out.println();
+
 
 		if (maxPushPointX < maxPushPointY) {
             for(Desk d:desksForCurrentTable){
@@ -88,7 +115,7 @@ public class TableGenerator {
 	return generatedTable;
 	}
 
-	private Desk getDesk(Desk searchDesk) {
+	private Desk getDesk(List<Desk> deskSet,Desk searchDesk) {
 		for (Desk temp : deskSet) {
 			if (temp.getX() == searchDesk.getX() && temp.getY() == searchDesk.getY())
 				return temp;
@@ -101,20 +128,24 @@ public class TableGenerator {
             if (temp.getDeskCode().equals(deskCode))
                 return temp;
         }
+        System.out.println("desk code "+deskCode+" not found");
         return null;
     }
 
 
-    public List<Table> generateTables(Vector floordData) {
+    public List<Table> generateTables(FloorObjects floordData) {
 
 
-		List<Desk> deskList = (List<Desk>)floordData.get(0);
-		Floor floor=(Floor)floordData.get(1);
+		List<Desk> deskList = floordData.getDeskList();
+		Floor floor=floordData.getFloor();
 
 		List<Table> tables = new ArrayList<Table>();
 
 		tableIds = new String[1000][1000];
-		deskSet = new HashSet<Desk>(deskList);
+        for(int i=0;i<1000;i++)
+            tableIds[i]=new String[1000];
+
+
 		maxX = floor.getMaxX();
 		maxY = floor.getMaxY();
 		visited = new boolean[maxX + 1][maxY + 1];
@@ -123,9 +154,9 @@ public class TableGenerator {
 		for (int i = 0; i <= maxX; i++) {
 			for (int j = 0; j <= maxY; j++) {
 				Desk searchDesk = new Desk(i, j);
-				if (deskSet.contains(searchDesk) && !visited[i][j]) {
-					searchDesk = getDesk(searchDesk);
-					Table generatedTable = generateTable(searchDesk);
+				if (containsDesk(deskList,searchDesk) && !visited[i][j]) {
+					searchDesk = getDesk(deskList,searchDesk);
+					Table generatedTable = generateTable(deskList,searchDesk);
                     generatedTable.setFloor(floor);
 					tables.add(generatedTable);
 				}
@@ -133,6 +164,14 @@ public class TableGenerator {
 		}
 		return tables;
 	}
+
+
+	boolean containsDesk(List<Desk> deskList,Desk desk){
+        for(Desk temp:deskList)
+            if(temp.getX()==desk.getX() && temp.getY()==desk.getY())
+                return true;
+        return false;
+    }
 
 	private class Point {
 		int x, y;

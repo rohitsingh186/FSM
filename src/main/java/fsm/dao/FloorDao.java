@@ -3,6 +3,8 @@ package fsm.dao;
 import java.util.List;
 
 import fsm.domain.Floor;
+import org.springframework.stereotype.Repository;
+
 
 public interface FloorDao {
 

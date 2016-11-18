@@ -1,6 +1,7 @@
 package fsm.service;
 
 import fsm.domain.Desk;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

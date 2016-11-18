@@ -1,6 +1,8 @@
 package fsm.service;
 
 import fsm.domain.Floor;
+import fsm.domain.UI.UploadInfo;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -16,4 +18,9 @@ public interface FloorService {
 
 	public List<Floor> getAllFloors();
 
+	public Floor parseInformation(int locationId, String floorCode, String path);
+
+	public Floor storeFile(UploadInfo uploadInfo);
+
+	Floor parseInformationForTesting(String s);
 }

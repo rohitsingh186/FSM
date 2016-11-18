@@ -1,6 +1,7 @@
 package fsm.service;
 
 import fsm.domain.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,5 +16,6 @@ public interface UserService {
 	public User getUserById(int userId);
 
 	public List<User> getAllUsers();
-	
+
+    User getUserByUsername(String username);
 }

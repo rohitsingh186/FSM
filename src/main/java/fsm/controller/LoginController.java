@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fsm.domain.User;
+import fsm.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import fsm.domain.Users;
-import fsm.dao.DataLoader;
 
 /**
  * Created by TUSHAR on 15-09-2016.
@@ -29,7 +30,10 @@ import fsm.dao.DataLoader;
 @RequestMapping("/login")
 public class LoginController {
 	
-	
+
+    @Autowired
+    UserService userService;
+
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView showLoginPage() {
@@ -44,11 +48,10 @@ public class LoginController {
 	public ModelAndView login(final HttpServletRequest req, ModelMap map) {
 
 		System.out.println("Came here");
-		String id = req.getParameter("username");
+		String username = req.getParameter("username");
 		String password = req.getParameter("password");
-		DataLoader dataLoader = new DataLoader();
-		Users userCheckLogin = dataLoader.getUser(id);
-		
+        User userCheckLogin = userService.getUserByUsername(username);
+
 		if (userCheckLogin == null) {
 
 			// map.addAttribute("error_message", "User does not exist");
@@ -61,7 +64,7 @@ public class LoginController {
 			if (password.equals(userCheckLogin.getPassword())) {
 
 				HttpSession session = req.getSession();
-				session.setAttribute("id", id);
+				session.setAttribute("id", username);
 				// TODO: resp.sendRedirect(req.getContextPath()); // check filename
 				System.out.println("Exited here 2");
 				return new ModelAndView("redirect:/controller/uploadFile");

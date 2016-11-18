@@ -4,7 +4,7 @@
 
 	<display-name>Archetype Created Web Application</display-name>
 
-	<!-- jersey servlet mapping -->
+	<!--&lt;!&ndash; jersey servlet mapping &ndash;&gt;
 	<servlet>
 		<servlet-name>Jersey Web Application</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer
@@ -19,13 +19,12 @@
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-	
+	-->
 
 	<!-- Adding DispatcherServlet -->
 	<servlet>
 		<servlet-name>mvc-dispatcher</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -39,6 +38,16 @@
 		<servlet-name>mvc-dispatcher</servlet-name>
 		<url-pattern>/controller/*</url-pattern>
 	</servlet-mapping>
+
+	<context-param>
+		<param-name> contextConfigLocation</param-name>
+		<param-value>WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
 
 	<!-- home page for the application -->
 	<welcome-file-list>

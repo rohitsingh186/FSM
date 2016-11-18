@@ -1,6 +1,7 @@
 package fsm.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
@@ -39,6 +40,7 @@ public class City {
 	public City() {
 		super();
 	}
+
 
 	public int getId() {
 		return id;

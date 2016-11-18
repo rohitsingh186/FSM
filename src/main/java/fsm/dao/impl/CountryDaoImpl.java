@@ -5,11 +5,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fsm.dao.CountryDao;
 import fsm.domain.Country;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class CountryDaoImpl implements CountryDao {
 
 	@Autowired
@@ -51,7 +54,9 @@ public class CountryDaoImpl implements CountryDao {
 
 	public Country getCountryByName(String countryName) {
 		Session session = sessionFactory.getCurrentSession();
-		Country country = (Country) session.get(Country.class, countryName);
+		Criteria criteria=session.createCriteria(Country.class);
+		criteria.add(Restrictions.eq("name", countryName));
+		Country country=(Country)criteria.uniqueResult();
 		return country;
 	}
 	public List<Country> getAllCountries() {

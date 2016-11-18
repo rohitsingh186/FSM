@@ -1,6 +1,7 @@
 package fsm.service;
 
 import fsm.domain.City;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

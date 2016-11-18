@@ -9,28 +9,10 @@
 	<url>http://maven.apache.org</url>
 
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.glassfish.jersey</groupId>
-				<artifactId>jersey-bom</artifactId>
-				<version>${jersey.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<dependencies>
 
 
 		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet-core -->
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet-core</artifactId>
-
-		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -64,6 +46,12 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<!--Spring Data rest-->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-webmvc</artifactId>
+			<version>2.5.4.RELEASE</version>
+		</dependency>
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -76,18 +64,13 @@
 			<version>5.2.2.Final</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.4.0.GA</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.hibernate/ejb3-persistence -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>ejb3-persistence</artifactId>
 			<version>1.0.2.GA</version>
 		</dependency>
-		<!-- Apache Commons DBCP -->
+	-->	<!-- Apache Commons DBCP -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
@@ -147,12 +130,20 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
 		</plugins>
 
 	</build>
 	<properties>
 		<jersey.version>2.16</jersey.version>
-		<spring.version>4.2.1.RELEASE</spring.version>
+		<spring.version>4.3.3.RELEASE</spring.version>
 		<security.version>4.0.3.RELEASE</security.version>
 		<jdk.version>1.8</jdk.version>
 		<hibernate.version>4.1.1.Final</hibernate.version>
